@@ -9,7 +9,12 @@ class Departament extends Model
 {
     use HasFactory;
 
-    protected $filable = ['name', 'company_id'];
+    protected $fillable = [
+        'name', 
+        'company_id',
+        'description',
+        'is_active'
+    ];
 
     public function company()
     {

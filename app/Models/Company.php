@@ -26,4 +26,9 @@ class Company extends Model
     {
         return $this->hasMany(Role::class, 'team_id');
     }
+
+    public function passwordVaults()
+    {
+        return $this->hasMany(PasswordVault::class);
+    }
 }

@@ -14,6 +14,8 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Filament\Forms\Components\Section;
 use Filament\Forms\Components\SpatieTagsInput;
+use Filament\Tables\Columns\SpatieTagsColumn;
+use Illuminate\Support\Facades\Hash;
 
 class PasswordVaultResource extends Resource
 {
@@ -33,7 +35,9 @@ class PasswordVaultResource extends Resource
                         Forms\Components\TextInput::make('username')
                             ->maxLength(255),
                         Forms\Components\TextInput::make('password')
+                            ->password()
                             ->required()
+                            ->dehydrated()
                             ->columnSpanFull(),
                         Forms\Components\TextInput::make('url')
                             ->maxLength(255),
@@ -78,6 +82,13 @@ class PasswordVaultResource extends Resource
                 Tables\Columns\TextColumn::make('url')
                     ->searchable()
                     ->sortable(),
+                SpatieTagsColumn::make('tags')
+                    ->searchable(query: function (Builder $query, string $search) {
+                        $query->whereHas('tags', function (Builder $query) use ($search) {
+                            $query->where('name', 'ilike', "%{$search}%");
+                        });
+                    })
+                    ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('visibility')
                     ->searchable(),
                 Tables\Columns\IconColumn::make('active')

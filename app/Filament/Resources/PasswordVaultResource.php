@@ -36,8 +36,11 @@ class PasswordVaultResource extends Resource
                             ->maxLength(255),
                         Forms\Components\TextInput::make('password')
                             ->password()
+                            ->revealable()
                             ->required()
-                            ->dehydrated()
+                            ->default(function ($record) {
+                                return $record ? $record->makeVisible(['password'])->password : null;
+                            })
                             ->columnSpanFull(),
                         Forms\Components\TextInput::make('url')
                             ->maxLength(255),
@@ -49,7 +52,7 @@ class PasswordVaultResource extends Resource
                                 'public' => 'publico',
                                 'private' => 'privado',
                             ])
-                            ->default('public')
+                            ->default('private')
                             ->native(false),
                         Forms\Components\Textarea::make('notes')
                             ->columnSpanFull(),

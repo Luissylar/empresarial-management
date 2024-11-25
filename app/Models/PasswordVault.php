@@ -6,12 +6,16 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Spatie\Tags\HasTags;
 use App\Traits\Auth\BelongsToAuthenticatedUser;
+use App\Traits\Utilities\Encryptable;
 
 class PasswordVault extends Model
 {
     use SoftDeletes;
     use HasTags;
     use BelongsToAuthenticatedUser;
+    use Encryptable;
+
+    protected static array $encryptable = ['password'];
 
     protected $fillable = [
         'company_id',
@@ -24,7 +28,6 @@ class PasswordVault extends Model
         'active',
     ];
 
-    protected $hidden = ['password'];
 
     public function user()
     {

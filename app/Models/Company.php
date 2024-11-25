@@ -21,4 +21,9 @@ class Company extends Model
     {
         return $this->hasMany(Departament::class);
     }
+
+    public function roles()
+    {
+        return $this->hasMany(Role::class, 'team_id');
+    }
 }

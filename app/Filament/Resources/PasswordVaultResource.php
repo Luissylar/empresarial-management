@@ -16,6 +16,8 @@ use Filament\Forms\Components\Section;
 use Filament\Forms\Components\SpatieTagsInput;
 use Filament\Tables\Columns\SpatieTagsColumn;
 use Illuminate\Support\Facades\Hash;
+use Filament\Tables\Filters\Filter;
+use Filament\Tables\Filters\SelectFilter;
 
 class PasswordVaultResource extends Resource
 {
@@ -53,6 +55,7 @@ class PasswordVaultResource extends Resource
                                 'private' => 'privado',
                             ])
                             ->default('private')
+                            ->required()
                             ->native(false),
                         Forms\Components\Textarea::make('notes')
                             ->columnSpanFull(),
@@ -107,6 +110,12 @@ class PasswordVaultResource extends Resource
             ])
             ->filters([
                 Tables\Filters\TrashedFilter::make(),
+                SelectFilter::make('visibilidad')
+                    ->options([
+                        'public' => 'publico',
+                        'private' => 'privado',
+                    ])
+                    ->attribute('visibility'),
             ])
             ->actions([
                 Tables\Actions\ViewAction::make(),
